@@ -1,23 +1,22 @@
 <template>
-  <footer :todos="todos" class="text-sm text-gray-300 mt-10">
-    {{ todos.length }} more to do, {{ filteredDone }} done
+  <footer class="text-sm text-gray-300 mt-10">
+    {{ stats.active }} more to do, {{ stats.done }} done
   </footer>
 </template>
 
 <script lang="ts">
-import { Todo } from '~/types/Todo';
+import { PropType, defineComponent } from 'vue';
+
+export interface Stats {
+  active: number;
+  done: number;
+}
 
 export default defineComponent({
   props: {
-    todos: {
-      type: Array as PropType<Todo[]>,
+    stats: {
+      type: Object as PropType<Stats>,
       required: true,
-    },
-  },
-  computed: {
-    filteredDone(): number {
-      const result = this.todos.filter((todo) => todo.completed);
-      return result.length;
     },
   },
 });

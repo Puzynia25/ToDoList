@@ -7,12 +7,11 @@
         <AppTodoList
           :todos="filteredTodos"
           @toggle-todo="toggleTodo"
-          @remove-todo="removeTodo"
-           />
+          @remove-todo="removeTodo" />
         <AppAddTodo @add-todo="addTodo" />
       </main>
 
-      <AppFooter :todos="todos" />
+      <AppFooter :stats="stats" />
     </div>
   </div>
 </template>
@@ -24,7 +23,7 @@ import AppHeader from './components/AppHeader.vue';
 import AppFilters from './components/AppFilters.vue';
 import AppTodoList from './components/AppTodoList.vue';
 import AppAddTodo from './components/AppAddTodo.vue';
-import AppFooter from './components/AppFooter.vue';
+import AppFooter, { Stats } from './components/AppFooter.vue';
 import { Todo } from './types/Todo';
 import { Filter } from './types/Filter';
 
@@ -47,20 +46,32 @@ export default defineComponent({
         { id: 1, text: 'Learn the basics of Vue', completed: true },
         { id: 2, text: 'Learn the basics of TypeScript', completed: false },
       ],
-      activeFilter: 'Done',
+      activeFilter: 'All',
     };
   },
   computed: {
     filteredTodos(): Todo[] {
       switch (this.activeFilter) {
         case 'Active':
-          return this.todos.filter((todo) => !todo.completed);
+          return this.activeTodos;
         case 'Done':
-          return this.todos.filter((todo) => todo.completed);
+          return this.doneTodos;
         case 'All':
         default:
-          return this.todos
+          return this.todos;
       }
+    },
+    stats(): Stats {
+      return {
+        active: this.activeTodos.length,
+        done: this.doneTodos.length,
+      };
+    },
+    doneTodos(): Todo[] {
+      return this.todos.filter((todo) => todo.completed);
+    },
+    activeTodos(): Todo[] {
+      return this.todos.filter((todo) => !todo.completed);
     },
   },
   methods: {

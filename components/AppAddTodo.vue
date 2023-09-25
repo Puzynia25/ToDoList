@@ -77,11 +77,16 @@ export default defineComponent({
     addTodo() {
       this.$emit('addTodo', {
         id: Date.now(),
-        text: this.todoText,
+        text: this.capitalizeFirstLetter,
         completed: false,
       });
       this.todoText = '';
     },
+  },
+  computed: {
+    capitalizeFirstLetter(): string {
+      return this.todoText.charAt(0).toUpperCase() + this.todoText.slice(1)
+    }
   },
   emits: {
     addTodo: (todo: Todo) => todo,
